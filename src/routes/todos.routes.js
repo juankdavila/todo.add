@@ -1,26 +1,15 @@
 import {TODOS} from "../constantes/constantes.js";
 import {Router} from "express";
+import {getTodos, getTodoById, createTodo, completeTodo,deleteTodo} from "../controllers/todo.controller.js";
 
 
 const routerTodos = Router();
 
-routerTodos.get('/todos', async (req, res) => {
-    res.status(200).json(TODOS);
-})
+routerTodos.get('/todos', getTodos);
 
-routerTodos.get('/todos/:id/', async (req, res) => {
-    const {id} = req.params;
+routerTodos.get('/todos/:id/',getTodoById);
+routerTodos.post('/todos', createTodo);
+routerTodos.post('/todos/complete/:id', completeTodo);
+routerTodos.delete('/todos/:id', deleteTodo);
 
-    const resultadoBusqueda = TODOS.filter( x => x.id == id);
-
-    if(resultadoBusqueda.length > 0){
-        res.status(200).json(resultadoBusqueda[0]);
-    }else{
-        const mensaje =`No se encontro todo con id ${id}`;
-        res.status(404).json({
-            message: mensaje,
-        })
-    }
-
-})
 export default routerTodos;
